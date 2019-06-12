@@ -260,6 +260,12 @@ func FetchJobManagerContainerObj(application *v1alpha1.FlinkApplication) *coreV1
 	operatorEnv := GetFlinkContainerEnv(application)
 	operatorEnv = append(operatorEnv, jmConfig.Environment.Env...)
 
+	jobManagerRpcAddrEnv := coreV1.EnvVar{
+		Name:  "JOB_MANAGER_RPC_ADDRESS",
+		Value: application.Name,
+	}
+	operatorEnv = append(operatorEnv, jobManagerRpcAddrEnv)
+
 	return &coreV1.Container{
 		Name:            getFlinkContainerName(JobManagerContainerName),
 		Image:           application.Spec.Image,

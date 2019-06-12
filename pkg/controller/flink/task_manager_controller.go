@@ -134,14 +134,20 @@ func FetchTaskManagerContainerObj(application *v1alpha1.FlinkApplication) *coreV
 
 	operatorEnv := GetFlinkContainerEnv(application)
 
-	operatorEnv = append(operatorEnv, coreV1.EnvVar{
-		Name: TaskManagerHostnameEnvVar,
-		ValueFrom: &coreV1.EnvVarSource{
-			FieldRef: &coreV1.ObjectFieldSelector{
-				FieldPath: "status.podIP",
+	operatorEnv = append(operatorEnv, []coreV1.EnvVar{
+		{
+			Name: TaskManagerHostnameEnvVar,
+			ValueFrom: &coreV1.EnvVarSource{
+				FieldRef: &coreV1.ObjectFieldSelector{
+					FieldPath: "status.podIP",
+				},
 			},
 		},
-	})
+		{
+			Name:  "JOB_MANAGER_RPC_ADDRESS",
+			Value: application.Name,
+		},
+	}...)
 
 	operatorEnv = append(operatorEnv, tmConfig.Environment.Env...)
 
