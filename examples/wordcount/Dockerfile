@@ -9,7 +9,7 @@ ENV PATH=$FLINK_HOME/bin:$HADOOP_HOME/bin:$MAVEN_HOME/bin:$PATH
 COPY . /code
 
 # Configure Flink version
-ENV FLINK_VERSION=1.8.1 \
+ENV FLINK_VERSION=1.8.2 \
     HADOOP_SCALA_VARIANT=scala_2.12
 
 # Install dependencies
@@ -43,7 +43,7 @@ WORKDIR /code
 RUN \
   mvn package; \
   mkdir -p /opt/flink/flink-web-upload; \
-  cp flink-conf.yaml /usr/local/; \
+  cp flink-conf.yaml /opt/flink; \
   cp /code/target/*.jar /opt/flink/flink-web-upload/
 
 RUN groupadd --system --gid=9999 flink && \
@@ -60,8 +60,8 @@ RUN set -ex; \
   tar -xf flink.tgz --strip-components=1; \
   rm flink.tgz; \
   \
-  cp ./opt/flink-s3-fs-presto-1.8.1.jar ./lib/;\
-  cp ./opt/flink-s3-fs-hadoop-1.8.1.jar ./lib/;\
+  cp ./opt/flink-s3-fs-presto-1.8.2.jar ./lib/;\
+  cp ./opt/flink-s3-fs-hadoop-1.8.2.jar ./lib/;\
   \  
   chown -R flink:flink .;
 

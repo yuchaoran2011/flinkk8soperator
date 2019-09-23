@@ -3,11 +3,10 @@ kind: FlinkApplication
 metadata:
   name: wordcount-operator-example
   namespace: flink-operator
-  annotations:
-  labels:
-    environment: development
 spec:
-  image: docker.io/lyft/wordcount-operator-example:{sha}
+  image: lightbend/flink-wordcount:latest
+  imagePullPolicy: Always
+  serviceAccountName: toned-guppy-flink
   flinkConfig:
     taskmanager.heap.size: 200
     state.backend.fs.checkpointdir: file:///checkpoints/flink/checkpoints
